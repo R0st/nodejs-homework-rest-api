@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const DB_HOST =
-  "mongodb+srv://Rostyslav:YvCptU38DSL9t39@cluster0.gumtw.mongodb.net/online_shop?retryWrites=true&w=majority  ссылка в mongodb Compass";
+const { DB_HOST } = require("./config");
 
 mongoose
   .connect(DB_HOST, {
