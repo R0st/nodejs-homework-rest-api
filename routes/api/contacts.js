@@ -16,7 +16,7 @@ router.post("/", validation(joiSchema), controllerWrapper(ctrl.add));
 
 router.put(
   "/:contactId",
-  //   validation(joiSchema),
+  validation(joiSchema),
   controllerWrapper(ctrl.updateById)
 );
 
