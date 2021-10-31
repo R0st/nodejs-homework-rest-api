@@ -21,6 +21,10 @@ userSchema.methods.setPassword = function (password) {
   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }; // 2 способ
 
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+}; // 2 способ
+
 const joiSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required(),
