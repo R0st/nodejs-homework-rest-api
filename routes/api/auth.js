@@ -1,6 +1,10 @@
 const express = require("express");
 
-const { controllerWrapper, validation } = require("../../middlewares");
+const {
+  controllerWrapper,
+  validation,
+  authenticate,
+} = require("../../middlewares");
 const { joiSchema } = require("../../models/user");
 const { auth: ctrl } = require("../../controllers");
 
@@ -16,7 +20,7 @@ router.post(
 router.post("/login", validation(joiSchema), controllerWrapper(ctrl.login));
 //  router.post("/signin", ctrl.login);
 
-router.get("/logout", controllerWrapper(ctrl.logout));
+router.get("/logout", authenticate, controllerWrapper(ctrl.logout));
 //  router.get("/signout", ctrl.logout);
 
 module.exports = router;

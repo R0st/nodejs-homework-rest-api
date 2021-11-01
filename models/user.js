@@ -4,14 +4,23 @@ const bcrypt = require("bcryptjs");
 
 const userSchema = Schema(
   {
-    email: {
-      type: String,
-      required: true,
-    },
     password: {
       type: String,
-      required: true,
-      minlength: 6,
+      required: [true, "Password is required"],
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+    },
+    // subscription: {
+    //   type: String,
+    //   enum: ["starter", "pro", "business"],
+    //   default: "starter",
+    // },
+    token: {
+      type: String,
+      default: null,
     },
   },
   { versionKey: false, timestamps: true }
@@ -28,6 +37,8 @@ userSchema.methods.comparePassword = function (password) {
 const joiSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required(),
+  // subscription: Joi.string().required(),
+  // token: Joi.string().required(),
 });
 
 const User = model("user", userSchema);
