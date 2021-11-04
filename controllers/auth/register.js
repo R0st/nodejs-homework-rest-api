@@ -1,5 +1,6 @@
 const { Conflict } = require("http-errors");
-const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
+// const bcrypt = require("bcryptjs");
 const { User } = require("../../models");
 
 const register = async (req, res) => {
@@ -14,7 +15,8 @@ const register = async (req, res) => {
     // });
     // return;
   }
-  const newUser = new User({ email });
+  const avatarURL = gravatar.url(email);
+  const newUser = new User({ email, avatarURL });
   //  newUser={email}
   newUser.setPassword(password);
   //  newUser={email,password}  //2 способ
