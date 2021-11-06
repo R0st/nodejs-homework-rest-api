@@ -1,28 +1,33 @@
 const { Conflict } = require("http-errors");
 const gravatar = require("gravatar");
-// const bcrypt = require("bcryptjs");
+const { nanoid } = require("nanoid");
+
 const { User } = require("../../models");
+const { sendEmail } = require("../../helpers");
 
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     throw new Conflict("Already registered");
-    // req.status(409).json({
-    //   status: "error",
-    //   code: 409,
-    //   message: "Already register",
-    // });
-    // return;
   }
   const avatarURL = gravatar.url(email);
-  const newUser = new User({ email, avatarURL });
-  //  newUser={email}
+  const verifyToken = nanoid();
+  const newUser = new User({ email, avatarURL, verifyToken });
+
   newUser.setPassword(password);
-  //  newUser={email,password}  //2 способ
   await newUser.save(); //сохраняется в базу
-  // const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  // await User.create({ email, password: hashPassword });  //1 способ
+
+  const mail = {
+    to: email,
+    subject: "Подтверждение регистрации на сайте",
+    html: `
+    <a
+      target="_blank"
+      href="http://localhost:3000/api/users/verify/${verifyToken}">Нажмите для подтверждения email</a>`,
+  };
+
+  sendEmail(mail);
 
   res.status(201).json({
     status: "success",

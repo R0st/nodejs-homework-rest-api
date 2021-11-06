@@ -8,6 +8,7 @@ const { users: ctrl } = require("../../controllers");
 
 const router = express.Router();
 
+router.get("/verify/:verificationToken", controllerWrapper(ctrl.verify));
 router.patch(
   "/avatars",
   authenticate,

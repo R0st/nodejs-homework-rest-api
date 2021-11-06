@@ -23,8 +23,8 @@ const login = async (req, res) => {
   //   throw new Unauthorized("Password wrong");
   // } // 2 способ
 
-  if (!user || !user.comparePassword(password)) {
-    throw new Unauthorized("Wrong email or password");
+  if (!user || !user.verify || !user.comparePassword(password)) {
+    throw new Unauthorized("Wrong email or password or email not verify");
   }
 
   const payload = {
